@@ -138,8 +138,8 @@ class _HeapSortScreenState extends State<HeapSortScreen> {
                         color: index == currentIndex
                             ? Colors.red
                             : index == comparedIndex
-                            ? Colors.green
-                            : Colors.blue,
+                                ? Colors.green
+                                : Colors.blue,
                         shape: BoxShape.circle,
                       ),
                       child: Text(
@@ -237,7 +237,8 @@ class HeapTreePainter extends CustomPainter {
     for (int i = 0; i < array.length; i++) {
       int level = (log(i + 1) / log(2)).floor();
       int positionInLevel = i - pow(2, level).toInt() + 1;
-      double x = centerX + (positionInLevel - pow(2, level - 1).toInt() + 1) * nodeRadius * 3;
+      double x = centerX +
+          (positionInLevel - pow(2, level - 1).toInt() + 1) * nodeRadius * 3;
       double y = level * levelHeight + nodeRadius;
 
       positions[i] = Offset(x, y);
@@ -254,8 +255,8 @@ class HeapTreePainter extends CustomPainter {
       paint.color = i == currentIndex
           ? Colors.red
           : i == comparedIndex
-          ? Colors.green
-          : Colors.blue;
+              ? Colors.green
+              : Colors.blue;
 
       canvas.drawCircle(positions[i]!, nodeRadius, paint);
 
