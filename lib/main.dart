@@ -38,7 +38,7 @@ class _HeapSortScreenState extends State<HeapSortScreen> {
 
   void randomizeArray() {
     setState(() {
-      array = List<int>.generate(10, (_) => Random().nextInt(100));
+      array = List<int>.generate(15, (_) => Random().nextInt(100));
       currentIndex = null;
       comparedIndex = null;
     });
@@ -229,20 +229,24 @@ class HeapTreePainter extends CustomPainter {
     );
 
     double centerX = size.width / 2;
-    double levelHeight = 70;
+    double levelHeight = 100; // Adjust vertical spacing here
     double nodeRadius = 20;
+    double baseSpacing = size.width / 4; // Base spacing for the top level
 
     Map<int, Offset> positions = {};
 
     for (int i = 0; i < array.length; i++) {
       int level = (log(i + 1) / log(2)).floor();
       int positionInLevel = i - pow(2, level).toInt() + 1;
-      double x = centerX +
-          (positionInLevel - pow(2, level - 1).toInt() + 1) * nodeRadius * 3;
+
+      // Calculate the position of the node
+      double x =
+          centerX + positionInLevel * (baseSpacing / pow(2, level).toDouble());
       double y = level * levelHeight + nodeRadius;
 
       positions[i] = Offset(x, y);
 
+      // Draw the connection line to the parent
       if (i > 0) {
         int parent = (i - 1) ~/ 2;
         canvas.drawLine(
@@ -252,14 +256,17 @@ class HeapTreePainter extends CustomPainter {
         );
       }
 
+      // Set the color for the current node
       paint.color = i == currentIndex
           ? Colors.red
           : i == comparedIndex
               ? Colors.green
               : Colors.blue;
 
+      // Draw the node
       canvas.drawCircle(positions[i]!, nodeRadius, paint);
 
+      // Draw the text in the center of the node
       textPainter.text = TextSpan(
         text: array[i].toString(),
         style: textStyle,
