@@ -4,7 +4,7 @@ This web-based application provides an intuitive and interactive platform to vis
 
 # Features include:
 
-#  Users can enter their own arrays to see how heap sort processes them.
-# Step-by-step Visualization: Watch the heap transformation as the algorithm progresses.
-# Performance Metrics: Track the number of comparisons and swaps made during the sorting process.
-# Responsive Design: Accessible on all devices with a user-friendly interface.
+Users can enter their own arrays to see how heap sort processes them.
+Step-by-step Visualization: Watch the heap transformation as the algorithm progresses.
+Performance Metrics: Track the number of comparisons and swaps made during the sorting process.
+Responsive Design: Accessible on all devices with a user-friendly interface.
