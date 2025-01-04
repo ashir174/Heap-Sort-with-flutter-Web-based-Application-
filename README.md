@@ -1,16 +1,10 @@
-# heapsort
+# Heap Sort Web Application
 
-A new Flutter project.
+This web-based application provides an intuitive and interactive platform to visualize the Heap Sort algorithm. Users can easily input arrays of numbers, and the application will sort them using the heap sort technique, demonstrating the process step by step. The heap sort algorithm, a comparison-based sorting algorithm, is an efficient method of sorting with a time complexity of O(n log n) in both the worst and average cases. Through this application, users can visually observe how the heap is built and how elements are extracted to form a sorted array. It is a great educational tool for learning how heap sort works, from constructing the heap to performing the final sort.
 
-## Getting Started
+# Features include:
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+#  Users can enter their own arrays to see how heap sort processes them.
+# Step-by-step Visualization: Watch the heap transformation as the algorithm progresses.
+# Performance Metrics: Track the number of comparisons and swaps made during the sorting process.
+# Responsive Design: Accessible on all devices with a user-friendly interface.
