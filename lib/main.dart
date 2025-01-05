@@ -115,86 +115,117 @@ class _HeapSortScreenState extends State<HeapSortScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Heap Sort Visualizer'),
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            flex: 1,
-            child: Column(
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFFA1C4FD), Color(0xFFC2E9FB)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: Column(
+          children: [
+            AppBar(
+              title: Text('Heap Sort Visualizer'),
+              backgroundColor: Color(0xFFA1C4FD),
+            ),
+            Expanded(
+              flex: 1,
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: array.asMap().entries.map((entry) {
+                      int index = entry.key;
+                      int value = entry.value;
+                      return AnimatedContainer(
+                        duration: Duration(milliseconds: 300),
+                        width: 40,
+                        height: 40,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: index == currentIndex
+                              ? Colors.red.shade300
+                              : index == comparedIndex
+                                  ? Colors.green.shade300
+                                  : Color(0xFFFAFAFA), // Light off-white
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.grey.shade300),
+                        ),
+                        child: Text(
+                          '$value',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            shadows: [
+                              Shadow(
+                                offset: Offset(0.5, 0.5),
+                                blurRadius: 2.0,
+                                color: Colors.black26,
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 15,
+                        height: 15,
+                        color: Colors.red.shade300,
+                        margin: EdgeInsets.symmetric(horizontal: 5),
+                      ),
+                      Text('Current Node'),
+                      SizedBox(width: 20),
+                      Container(
+                        width: 15,
+                        height: 15,
+                        color: Colors.green.shade300,
+                        margin: EdgeInsets.symmetric(horizontal: 5),
+                      ),
+                      Text('Compared Node'),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              flex: 3,
+              child: CustomPaint(
+                painter: HeapTreePainter(array, currentIndex, comparedIndex),
+                child: Container(),
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: array.asMap().entries.map((entry) {
-                    int index = entry.key;
-                    int value = entry.value;
-                    return AnimatedContainer(
-                      duration: Duration(milliseconds: 300),
-                      width: 40,
-                      height: 40,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: index == currentIndex
-                            ? Colors.red
-                            : index == comparedIndex
-                                ? Colors.green
-                                : Colors.blue,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Text(
-                        '$value',
-                        style: TextStyle(color: Colors.white, fontSize: 16),
-                      ),
-                    );
-                  }).toList(),
+                ElevatedButton(
+                  onPressed: isSorting ? null : randomizeArray,
+                  child: Text('Randomize'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFFFAFAFA), // Light off-white
+                    shadowColor: Colors.black26,
+                    elevation: 5,
+                  ),
                 ),
-                SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 15,
-                      height: 15,
-                      color: Colors.red,
-                      margin: EdgeInsets.symmetric(horizontal: 5),
-                    ),
-                    Text('Current Node'),
-                    SizedBox(width: 20),
-                    Container(
-                      width: 15,
-                      height: 15,
-                      color: Colors.green,
-                      margin: EdgeInsets.symmetric(horizontal: 5),
-                    ),
-                    Text('Compared Node'),
-                  ],
+                ElevatedButton(
+                  onPressed: isSorting ? null : heapSort,
+                  child: Text('Heap Sort'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFFFAFAFA), // Light off-white
+                    shadowColor: Colors.black26,
+                    elevation: 5,
+                  ),
                 ),
               ],
             ),
-          ),
-          Expanded(
-            flex: 3,
-            child: CustomPaint(
-              painter: HeapTreePainter(array, currentIndex, comparedIndex),
-              child: Container(),
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ElevatedButton(
-                onPressed: isSorting ? null : randomizeArray,
-                child: Text('Randomize'),
-              ),
-              ElevatedButton(
-                onPressed: isSorting ? null : heapSort,
-                child: Text('Heap Sort'),
-              ),
-            ],
-          ),
-          SizedBox(height: 20),
-        ],
+            SizedBox(height: 20),
+          ],
+        ),
       ),
     );
   }
@@ -209,16 +240,14 @@ class HeapTreePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = Colors.blue
-      ..style = PaintingStyle.fill;
+    final paint = Paint()..style = PaintingStyle.fill;
 
     final linePaint = Paint()
-      ..color = Colors.grey
+      ..color = Colors.grey.shade400
       ..strokeWidth = 2;
 
     final textStyle = TextStyle(
-      color: Colors.white,
+      color: Colors.black,
       fontSize: 16,
       fontWeight: FontWeight.bold,
     );
@@ -229,9 +258,9 @@ class HeapTreePainter extends CustomPainter {
     );
 
     double centerX = size.width / 2;
-    double levelHeight = 100; // Adjust vertical spacing here
+    double levelHeight = 100;
     double nodeRadius = 20;
-    double baseSpacing = size.width / 4; // Base spacing for the top level
+    double baseSpacing = size.width / 4;
 
     Map<int, Offset> positions = {};
 
@@ -239,14 +268,12 @@ class HeapTreePainter extends CustomPainter {
       int level = (log(i + 1) / log(2)).floor();
       int positionInLevel = i - pow(2, level).toInt() + 1;
 
-      // Calculate the position of the node
       double x =
           centerX + positionInLevel * (baseSpacing / pow(2, level).toDouble());
       double y = level * levelHeight + nodeRadius;
 
       positions[i] = Offset(x, y);
 
-      // Draw the connection line to the parent
       if (i > 0) {
         int parent = (i - 1) ~/ 2;
         canvas.drawLine(
@@ -256,17 +283,14 @@ class HeapTreePainter extends CustomPainter {
         );
       }
 
-      // Set the color for the current node
       paint.color = i == currentIndex
-          ? Colors.red
+          ? Colors.red.shade300
           : i == comparedIndex
-              ? Colors.green
-              : Colors.blue;
+              ? Colors.green.shade300
+              : Color(0xFFFAFAFA); // Light off-white
 
-      // Draw the node
       canvas.drawCircle(positions[i]!, nodeRadius, paint);
 
-      // Draw the text in the center of the node
       textPainter.text = TextSpan(
         text: array[i].toString(),
         style: textStyle,
