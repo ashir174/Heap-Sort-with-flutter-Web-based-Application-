@@ -260,7 +260,7 @@ class HeapTreePainter extends CustomPainter {
     double centerX = size.width / 2;
     double levelHeight = 100;
     double nodeRadius = 20;
-    double baseSpacing = size.width / 4;
+    double baseSpacing = size.width / (pow(2, log(array.length) ~/ log(2) + 1));
 
     Map<int, Offset> positions = {};
 
@@ -269,7 +269,7 @@ class HeapTreePainter extends CustomPainter {
       int positionInLevel = i - pow(2, level).toInt() + 1;
 
       double x =
-          centerX + positionInLevel * (baseSpacing / pow(2, level).toDouble());
+          centerX + (positionInLevel - (pow(2, level) - 1) / 2) * baseSpacing;
       double y = level * levelHeight + nodeRadius;
 
       positions[i] = Offset(x, y);
