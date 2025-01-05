@@ -44,28 +44,28 @@ class _HeapSortScreenState extends State<HeapSortScreen> {
     });
   }
 
-  Future<void> heapSort() async {
+  Future<void> heapSortAscending() async {
     setState(() {
       isSorting = true;
     });
 
     int n = array.length;
 
+    // Build max heap
     for (int i = n ~/ 2 - 1; i >= 0; i--) {
-      await heapify(n, i);
+      await heapifyMaxHeap(n, i);
     }
 
+    // Extract elements from heap one by one
     for (int i = n - 1; i > 0; i--) {
       setState(() {
-        currentIndex = 0;
-        comparedIndex = i;
         int temp = array[0];
         array[0] = array[i];
         array[i] = temp;
       });
       await Future.delayed(Duration(milliseconds: 500));
 
-      await heapify(i, 0);
+      await heapifyMaxHeap(i, 0);
     }
 
     setState(() {
@@ -75,7 +75,38 @@ class _HeapSortScreenState extends State<HeapSortScreen> {
     });
   }
 
-  Future<void> heapify(int n, int i) async {
+  Future<void> heapSortDescending() async {
+    setState(() {
+      isSorting = true;
+    });
+
+    int n = array.length;
+
+    // Build min heap
+    for (int i = n ~/ 2 - 1; i >= 0; i--) {
+      await heapifyMinHeap(n, i);
+    }
+
+    // Extract elements from heap one by one
+    for (int i = n - 1; i > 0; i--) {
+      setState(() {
+        int temp = array[0];
+        array[0] = array[i];
+        array[i] = temp;
+      });
+      await Future.delayed(Duration(milliseconds: 500));
+
+      await heapifyMinHeap(i, 0);
+    }
+
+    setState(() {
+      isSorting = false;
+      currentIndex = null;
+      comparedIndex = null;
+    });
+  }
+
+  Future<void> heapifyMaxHeap(int n, int i) async {
     int largest = i;
     int left = 2 * i + 1;
     int right = 2 * i + 2;
@@ -108,7 +139,44 @@ class _HeapSortScreenState extends State<HeapSortScreen> {
       });
       await Future.delayed(Duration(milliseconds: 500));
 
-      await heapify(n, largest);
+      await heapifyMaxHeap(n, largest);
+    }
+  }
+
+  Future<void> heapifyMinHeap(int n, int i) async {
+    int smallest = i;
+    int left = 2 * i + 1;
+    int right = 2 * i + 2;
+
+    setState(() {
+      currentIndex = i;
+    });
+
+    if (left < n && array[left] < array[smallest]) {
+      setState(() {
+        comparedIndex = left;
+      });
+      await Future.delayed(Duration(milliseconds: 500));
+      smallest = left;
+    }
+
+    if (right < n && array[right] < array[smallest]) {
+      setState(() {
+        comparedIndex = right;
+      });
+      await Future.delayed(Duration(milliseconds: 500));
+      smallest = right;
+    }
+
+    if (smallest != i) {
+      setState(() {
+        int temp = array[i];
+        array[i] = array[smallest];
+        array[smallest] = temp;
+      });
+      await Future.delayed(Duration(milliseconds: 500));
+
+      await heapifyMinHeap(n, smallest);
     }
   }
 
@@ -213,8 +281,17 @@ class _HeapSortScreenState extends State<HeapSortScreen> {
                   ),
                 ),
                 ElevatedButton(
-                  onPressed: isSorting ? null : heapSort,
-                  child: Text('Heap Sort'),
+                  onPressed: isSorting ? null : heapSortAscending,
+                  child: Text('Min Heap (Sort Ascending)'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFFFAFAFA), // Light off-white
+                    shadowColor: Colors.black26,
+                    elevation: 5,
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: isSorting ? null : heapSortDescending,
+                  child: Text('Max Heap (Sort Descending)'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color(0xFFFAFAFA), // Light off-white
                     shadowColor: Colors.black26,
