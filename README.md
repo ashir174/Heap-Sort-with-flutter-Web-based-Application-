@@ -11,3 +11,7 @@ Step-by-step Visualization: Watch the heap transformation as the algorithm progr
 Performance Metrics: Track the number of comparisons and swaps made during the sorting process.
 
 Responsive Design: Accessible on all devices with a user-friendly interface.
+
+
+![image](https://github.com/user-attachments/assets/5cf0b009-c4f2-4fd3-a895-99529fcfe72d)
+
